@@ -857,7 +857,13 @@ impl Client {
         };
 
         let switch_code = interface.get_switch_code();
-        let legacy_secure = !key.is_empty() && (!token.is_empty() || !switch_code.is_empty());
+        // Selfhost build: OSS rustdesk-server (<=1.1.16) never sends the
+        // server-first KeyExchange that `legacy_secure` sessions wait for on
+        // the rendezvous socket, so every logged-in connection deadlocked
+        // (18s -> "Failed to secure tcp: deadline has elapsed"). Login itself
+        // (address book over the HTTP API) does not need this handshake.
+        let legacy_secure = false;
+        let _ = switch_code;
         let carries_offer = webrtc_offerer.as_ref().and_then(|g| g.stream()).is_some();
         // Counted from before the key exchange, so the exchange spends the UDP NAT test's own
         // wait rather than replacing it: the test runs beside both.
