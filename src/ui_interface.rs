@@ -572,13 +572,10 @@ pub fn set_share_rdp(_enable: bool) {
 
 #[inline]
 pub fn is_installed_lower_version() -> bool {
-    #[cfg(not(windows))]
-    return false;
-    #[cfg(windows)]
-    {
-        let b = crate::platform::windows::get_reg("BuildDate");
-        return crate::BUILD_DATE.cmp(&b).is_gt();
-    }
+    // Selfhost build: upgrades are file-replacements (no installer), so the
+    // registry BuildDate never advances and this comparison always misfires,
+    // showing a permanent "install is lower version" card. Disabled.
+    false
 }
 
 #[inline]
