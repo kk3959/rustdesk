@@ -1247,6 +1247,13 @@ fn get_api_server_(api: String, custom: String) -> String {
     if !api.is_empty() {
         return api.to_owned();
     }
+    // Selfhost build: baked API server default (checked before deriving from
+    // the rendezvous host, whose port-2 rule would point at the wrong port).
+    if let Some(baked) = option_env!("RS_API_SERVER") {
+        if !baked.is_empty() {
+            return baked.to_owned();
+        }
+    }
     let s0 = get_custom_rendezvous_server(custom);
     if !s0.is_empty() {
         let s = crate::increase_port(&s0, -2);

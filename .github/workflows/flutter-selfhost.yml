@@ -31,6 +31,7 @@ on:
 env:
   # Self-hosted customization: inject your own server public key at compile time
   RS_PUB_KEY: "${{ vars.RS_PUB_KEY }}"
+  RS_API_SERVER: "${{ vars.RS_API_SERVER }}"
   RENDEZVOUS_SERVER: "${{ vars.RENDEZVOUS_SERVER }}"
   SCITER_RUST_VERSION: "1.75" # https://github.com/rustdesk/rustdesk/discussions/7503, also 1.78 has ABI change which causes our sciter version not working, https://blog.rust-lang.org/2024/03/30/i128-layout-update.html
   RUST_VERSION: "1.75" # sciter failed on m1 with 1.78 because of https://blog.rust-lang.org/2024/03/30/i128-layout-update.html
