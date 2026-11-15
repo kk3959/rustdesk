@@ -1011,6 +1011,10 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
 }
 
 pub fn check_software_update() {
+    // Selfhost build: never check official rustdesk.com updates — our builds
+    // are distributed out-of-band, and the check only produces an upgrade
+    // card against versions we deliberately don't track.
+    return;
     if is_custom_client() {
         return;
     }
